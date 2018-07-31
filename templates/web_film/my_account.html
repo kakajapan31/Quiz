@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Tài khoản của tôi
+{% endblock %}
+
+{% block header %}
+    <div style="background: seashell; text-align: center; padding: 10px" >
+        <h1>Your account</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div style="background-color: rgba(100, 255, 200, 0.05); padding: 10px; margin-top: 30px" >
+            <h3>Your name: {{ user.first_name }} {{ user.last_name }}</h3>
+            <h3>Your username: {{ user.username }}</h3>
+            <h3>Your email: {{ user.email }} </h3>
+        </div>
+        <div class="pull-right" >
+            <a href="{% url 'change_password' %}">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Change your password</button></a>
+        </div>
+    {% else %}
+        <div class="alert alert-warning" style="margin-top: 20px">
+            <h2>You must to sign in to see your account</h2>
+        </div>
+    {% endif %}
+{% endblock %}

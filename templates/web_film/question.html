@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Quiz
+{% endblock %}
+
+{% block header %}
+    <h1 style="text-align: center">Quiz</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="width:600px;height:600px">
+        <h2>{{ question.question_text }}</h2>
+        <form action="{% url 'question' question.id %}" method="post">
+            {% csrf_token %}
+            {% for choice in question.choice_set.all %}
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+            {% endfor %}
+            <input type="submit" value="OK" />
+        </form>
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+                <div class="alert alert-warning" style="text-align: center">{{ message }}</div>
+            {% else %}
+                <div class="alert alert-success" style="text-align: center">{{ message }}</div>
+            {% endif %}
+            <div class="pull-right">
+                <a href="{% url 'question' question.id|add:1 %}">Next question</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

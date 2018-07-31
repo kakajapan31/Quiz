@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block header %}
+    <h1 style="text-align: center">Đăng nhập</h1>
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="alert alert-warning" style="margin-top: 20px">
+            <h2>You have logged in</h2>
+        </div>
+    {% else %}
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+                <div class="alert alert-warning">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="container" style="width:600px;height:600px">
+            <form class="form-signin" method="post">
+                {% csrf_token %}
+                <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+                <label for="username" class="sr-only">Username</label>
+                <input id="username" name="username" class="form-control" style="margin-bottom: 10px" placeholder="Username" required="" autofocus="">
+                <label for="password" class="sr-only">Password</label>
+                <input id="password" name="password" class="form-control" placeholder="Password" required="" type="password">
+                <br>
+                <div align="center">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: auto">Login</button>
+                    <a href="{% url 'forgot_password' %}">
+                        <button class="btn btn-lg btn-primary btn-block" type="button" style="width: auto; margin-top: 10px">
+                        Forgot your password</button></a>
+                </div>
+                <hr class="custom">
+            </form>
+        </div>
+    {% endif %}
+
+{% endblock %}

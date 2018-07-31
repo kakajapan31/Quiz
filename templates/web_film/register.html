@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Đăng kí
+{% endblock %}
+
+{% block header %}
+    <h1 style="text-align: center">Đăng kí</h1>
+{% endblock %}
+
+{% block content %}
+    {% for message in messages %}
+        {% if message.tags == "error" %}
+            <div class="alert alert-warning">
+                {{ message }}
+            </div>
+        {% else %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="container" style="width:600px;height:600px">
+        <form class="form-signin" method="post">
+            {% csrf_token %}
+            <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="first_name" class="sr-only">First Name</label>
+                    <input id="first_name" name="first_name" class="form-control" style="margin-bottom: 10px" placeholder="First Name" required="" autofocus="">
+                </div>
+                <div class="col-sm-6">
+                    <label for="last_name" class="sr-only">Last Name</label>
+                    <input id="last_name" name="last_name" class="form-control" style="margin-bottom: 10px" placeholder="Last Name" required="" autofocus="">
+                </div>
+            </div>
+            <label for="username" class="sr-only">Username</label>
+            <input id="username" name="username" class="form-control" style="margin-bottom: 10px" placeholder="Username" required="" autofocus="">
+            <label for="email" class="sr-only">Email</label>
+            <input id="email" name="email" class="form-control" style="margin-bottom: 10px" placeholder="Email" required="" autofocus="">
+            <label for="password1" class="sr-only">Password</label>
+            <input id="password1" name="password1" class="form-control" style="margin-bottom: 10px" placeholder="Password" required="" type="password">
+            <label for="password2" class="sr-only">Confirm Password</label>
+            <input id="password2" name="password2" class="form-control" placeholder="Confirm Password" required="" type="password">
+            <br>
+            <div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Đăng kí</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Trang chủ
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+    {% for message in messages %}
+        <div class="alert alert-info" style="margin-top: 20px">
+            <h4>{{ message }}</h4>
+        </div>
+    {% endfor %}
+    <div class="container" style="width:600px;height:600px; margin-top: 100px" >
+        <div align="center">
+            <a href="{% url 'question' 1 %}">
+                <button class="btn btn-lg btn-primary btn-block" type="button" style="width: auto">
+                Play Quiz</button></a>
+        </div>
+    </div>
+{% endblock %}
