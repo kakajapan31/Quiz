@@ -33,12 +33,13 @@
                 <input id="username" name="username" class="form-control" style="margin-bottom: 10px" placeholder="Username" required="" autofocus="">
                 <label for="password" class="sr-only">Password</label>
                 <input id="password" name="password" class="form-control" placeholder="Password" required="" type="password">
-                <br>
-                <div align="center">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: auto">Login</button>
-                    <a href="{% url 'forgot_password' %}">
-                        <button class="btn btn-lg btn-primary btn-block" type="button" style="width: auto; margin-top: 10px">
-                        Forgot your password</button></a>
+                <div class="pull-right">
+                    <ul class="nav navbar-nav">
+                        <li><button class="btn btn-lg btn-primary btn-block" type="submit" style="width: auto; margin-top: 15px">Login</button></li>
+                        <li><a href="{% url 'forgot_password' %}?next={{ next }}">
+                            <button class="btn btn-lg btn-primary btn-block" type="button" style="width: auto">
+                            Forgot your password</button></a></li>
+                    </ul>
                 </div>
                 <hr class="custom">
             </form>

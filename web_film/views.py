@@ -8,6 +8,8 @@ from django.contrib.auth import login as auth_login, logout as auth_logout, auth
 from django.contrib import  messages
 from django.contrib.auth.models import User
 from .models import Question, Choice
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 def logout(request):
     auth_logout(request)
@@ -17,6 +19,7 @@ def logout(request):
 class Book_list_view(generic.TemplateView):
     template_name = 'web_film/index.html'
 
+@method_decorator(login_required, name='dispatch')
 class Help(generic.TemplateView):
     template_name = 'web_film/help.html'
 
@@ -28,6 +31,11 @@ class Help(generic.TemplateView):
             messages.error(request, "You have not asked me :(")
         return redirect('help')
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
 class About_me(generic.TemplateView):
     template_name = 'web_film/about_me.html'
 
@@ -37,14 +45,20 @@ class Login(generic.TemplateView):
     def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
+        next = request.GET.get('next', 'index')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
             messages.info(request, "Welcome " + user.first_name + " " + user.last_name + " to come back ")
-            return redirect('index')
+            return redirect(next)
         else:
             messages.error(request, 'Username or password not correct, please try again.')
-            return redirect('login')
+            return redirect(request.get_full_path())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['next'] = self.request.GET.get('next', '')
+        return context
 
 class Register(generic.TemplateView):
     template_name = 'web_film/register.html'

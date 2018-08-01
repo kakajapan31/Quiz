@@ -11,33 +11,21 @@
 {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        {% for message in messages %}
-            {% if message.tags == "error" %}
-                <div class="alert alert-warning">
-                    {{ message }}
-                </div>
-            {% else %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endif %}
-        {% endfor %}
-        <form class="form-signin" method="post">
-            {% csrf_token %}
-            <div class="container-fluid" style="width: 100%;" align="top"   >
-                <label for="question" class="sr-only"> question</label>
-                <textarea autofocus id="question" name="question" class="form-control" placeholder="Give me a question?" 
-                style="height: 100px;"></textarea>
-            </div>
-            <div align="center" style="margin-top: 20px">
-                <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 200px" >Submit
-                </button>
-            </div>
-        </form>     
-    {% else %}
-        <div class="alert alert-info">
-            <h2>Please login to ask me!</h2>
+    {% for message in messages %}
+        {% if message.tags == "error" %}
+            <div class="alert alert-warning">{{ message }}</div>
+        {% else %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
+    <form class="form-signin" method="post">
+        {% csrf_token %}
+        <div class="container-fluid" style="width: 100%;" align="top"   >
+            <label for="question" class="sr-only"> question</label>
+            <textarea autofocus id="question" name="question" class="form-control" placeholder="Give me a question?" style="height: 100px;"></textarea>
         </div>
-    {% endif %}
+        <div align="center" style="margin-top: 20px">
+            <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 200px" >Submit</button>
+        </div>
+    </form>
 {% endblock %}

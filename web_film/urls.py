@@ -1,5 +1,6 @@
 from django.urls import  path
 from web_film import  views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.Book_list_view.as_view(), name='index'),
