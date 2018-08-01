@@ -20,14 +20,18 @@
             <input type="submit" value="OK" />
         </form>
         {% for message in messages %}
-            {% if message.tags == "error" %}
-                <div class="alert alert-warning" style="text-align: center">{{ message }}</div>
-            {% else %}
+            {% if message.tags == "success" %}
                 <div class="alert alert-success" style="text-align: center">{{ message }}</div>
+            {% else %}
+                <div class="alert alert-warning" style="text-align: center">{{ message }}</div>
             {% endif %}
-            <div class="pull-right">
-                <a href="{% url 'question' question.id|add:1 %}">Next question</a>
-            </div>
+            {% if message.tags != "info" %}
+                {% if count > question.id %}
+                    <div class="pull-right">
+                        <a href="{% url 'question' question.id|add:1 %}">Next question</a>
+                    </div>
+                {% endif %}
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}

@@ -136,20 +136,26 @@ class Forgot_password(generic.TemplateView):
 class Question_view(generic.DetailView):
     template_name = 'web_film/question.html'
     model = Question
+    context_object_name = 'question'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['count'] = Question.objects.count()
+        return context
 
     def post(self, request, pk):
         id_answer = request.POST.get('choice', None)
         if id_answer is None:
-            messages.error(request, "You must to choose an answer")
+            messages.info(request, "You must to choose an answer")
             return redirect('question', pk)
         id_correct_answer = Question.objects.get(pk=pk).id_correct_answer
-        print(id_answer, id_correct_answer)
         if int(id_answer) == int(id_correct_answer):
             messages.success(request, "Correct!")
             return redirect('question', pk)
         else:
             messages.error(request, "Wrong answer :(")
             return redirect('question', pk)
+
 
 
 
