@@ -35,7 +35,6 @@ class Help(generic.TemplateView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-
 class About_me(generic.TemplateView):
     template_name = 'web_film/about_me.html'
 
@@ -55,10 +54,10 @@ class Login(generic.TemplateView):
             messages.error(request, 'Username or password not correct, please try again.')
             return redirect(request.get_full_path())
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['next'] = self.request.GET.get('next', '')
-        return context
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('index')
+        return super().dispatch(*args, **kwargs)
 
 class Register(generic.TemplateView):
     template_name = 'web_film/register.html'
@@ -92,9 +91,20 @@ class Register(generic.TemplateView):
             messages.info(request, "Welcome new member " + user.first_name + " " + user.last_name)
             return redirect('index')
 
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('index')
+        return super().dispatch(*args, **kwargs)
+
+@method_decorator(login_required, name='dispatch')
 class My_account(generic.TemplateView):
     template_name = 'web_film/my_account.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+@method_decorator(login_required, name='dispatch')
 class Change_password(generic.TemplateView):
     template_name = 'web_film/change_password.html'
 
@@ -122,6 +132,10 @@ class Change_password(generic.TemplateView):
         user = authenticate(request=request, username=user.username, password=password1)
         auth_login(request, user)
         return redirect('change_password')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class Forgot_password(generic.TemplateView):
     template_name = 'web_film/forgot_password.html'
