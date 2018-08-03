@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from .models import Question, Choice
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from time import sleep
+from random import sample
 
 def logout(request):
     auth_logout(request)
