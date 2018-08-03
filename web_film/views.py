@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from .models import Question, Choice
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from time import sleep
 
 def logout(request):
     auth_logout(request)
@@ -161,28 +162,36 @@ class Forgot_password(generic.TemplateView):
             messages.error(request, "Your username or your email is wrong, try again!")
             return redirect('forgot_password')
 
+point = 0
 class Question_view(generic.DetailView):
     template_name = 'web_film/question.html'
     model = Question
-    context_object_name = 'question'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['count'] = Question.objects.count()
-        return context
+    def dispatch(self, request, pk):
+        global point
+        if pk > Question.objects.count():
+            messages.error(request, '{}{}{}{}{}'.format("I just have ", Question.objects.count(),
+                                                        " questions. You get ", point, " points"))
+            point = 0
+            return redirect('index')
+        return super().dispatch(request, pk)
 
     def post(self, request, pk):
+        global point
         id_answer = request.POST.get('choice', None)
         if id_answer is None:
             messages.info(request, "You must to choose an answer")
             return redirect('question', pk)
         id_correct_answer = Question.objects.get(pk=pk).id_correct_answer
         if int(id_answer) == int(id_correct_answer):
+            point += 10
             messages.success(request, "Correct!")
             return redirect('question', pk)
         else:
+            point -= 5
             messages.error(request, "Wrong answer :(")
             return redirect('question', pk)
+
 
 
 

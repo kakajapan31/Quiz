@@ -26,11 +26,7 @@
                 <div class="alert alert-warning" style="text-align: center">{{ message }}</div>
             {% endif %}
             {% if message.tags != "info" %}
-                {% if count > question.id %}
-                    <div class="pull-right">
-                        <a href="{% url 'question' question.id|add:1 %}">Next question</a>
-                    </div>
-                {% endif %}
+                <meta http-equiv="refresh" content="1; URL={% url 'question' question.id|add:1 %}">
             {% endif %}
         {% endfor %}
     </div>
