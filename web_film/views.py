@@ -10,7 +10,13 @@ from django.contrib.auth.models import User
 from .models import Question, Choice
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from random import sample
+from rest_framework import generics
+from .serializers import Question_serializer, Choice_serializer
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+
+
 
 def logout(request):
     auth_logout(request)
@@ -192,9 +198,26 @@ class Question_view(generic.DetailView):
             messages.error(request, "Wrong answer :(")
             return redirect('question', pk)
 
+class Create_view(generics.ListCreateAPIView):
+    """This class defines the create behavior of our rest api."""
+    queryset = Question.objects.all()
+    serializer_class = Question_serializer
 
+    def perform_create(self, serializer):
+        """Save the post data when creating a new bucketlist."""
+        serializer.save()
 
+class DeailsView(generics.RetrieveUpdateDestroyAPIView):
+    """This class handles the http GET, PUT and DELETE requests."""
 
+    queryset = Question.objects.all()
+    serializer_class = Question_serializer
+
+class Choice_list(generics.ListCreateAPIView):
+    def get_queryset(self):
+        queryset = Choice.objects.filter(question=self.kwargs["pk"])
+        return queryset
+    serializer_class = Choice_serializer
 
 
 

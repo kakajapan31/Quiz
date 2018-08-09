@@ -1,5 +1,6 @@
 from django.urls import  path
 from web_film import  views
+from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -13,4 +14,9 @@ urlpatterns = [
     path('change_password/',  views.Change_password.as_view(), name='change_password'),
     path('forgot_password/', views.Forgot_password.as_view(), name='forgot_password'),
     path('question/<int:pk>/', views.Question_view.as_view(), name='question'),
+    path('question_api/', views.Create_view.as_view(), name='create_question'),
+    path('question_api/<int:pk>/', views.DeailsView.as_view(), name='detail_question'),
+    path('question_api/<int:pk>/choices/', views.Choice_list.as_view(), name='detail_answer_of_question'),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
